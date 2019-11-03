@@ -1,0 +1,84 @@
+{
+  "private": true,
+  "name": "dom-predicates",
+  "description": "Functions for determining if an object resembles a DOM Node of various types (from any Realm) via duck typing.",
+  "version": "1.0.0-beta",
+  "license": "MIT",
+  "author": "Steven Vachon <contact@svachon.com> (https://svachon.com)",
+  "repository": "github:stevenvachon/dom-predicates",
+  "dependencies": {
+    "html-tags": "^3.1.0",
+    "protochain": "^1.0.5",
+    "self-closing-tags": "^1.0.1",
+    "svg-tag-names": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
+    "@babel/preset-env": "^7.7.1",
+    "array.prototype.flat": "^1.2.2",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "cartesian-product": "^2.1.2",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.8",
+    "gzip-size-cli": "^3.0.0",
+    "jsdom": "^15.2.1",
+    "mocha": "^6.2.2",
+    "npm-watch": "~0.6.0",
+    "nyc": "^14.1.1",
+    "parcel": "^1.12.4",
+    "puppeteer": "^2.0.0",
+    "puppeteer-to-istanbul": "^1.2.2",
+    "rimraf": "^3.0.0"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "build": "npm run build-release && npm run build-size && npm run build-test",
+    "build-release": "babel index.mjs --out-file=index.js --plugins=add-module-exports,@babel/proposal-optional-chaining --presets=@babel/env --source-maps",
+    "build-size": "parcel build index.js --experimental-scope-hoisting --global=DOMPredicates --log-level=1 --no-cache --no-source-maps --out-dir='.' --out-file=temp.js --public-url='.' && gzip-size temp.js && rimraf temp.js",
+    "build-test": "parcel build index.js --global=DOMPredicates --log-level=1 --no-cache --out-dir='.' --out-file=temp.js --public-url='.'",
+    "ci": "npm test && nyc report --reporter=text-lcov | coveralls",
+    "posttest": "nyc report --reporter=text-summary --reporter=html && rimraf temp.js temp.js.map",
+    "prepublishOnly": "npm test",
+    "pretest": "npm run build",
+    "test": "nyc --reporter=none mocha test.js --bail --check-leaks --timeout=5000",
+    "test:watch": "npm-watch test"
+  },
+  "watch": {
+    "test": {
+      "inherit": true,
+      "patterns": [
+        "index.mjs",
+        "test.js"
+      ]
+    }
+  },
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "index.js.map",
+    "index.mjs"
+  ],
+  "keywords": [
+    "attached",
+    "custom-element",
+    "detached",
+    "document",
+    "dom",
+    "element",
+    "html",
+    "isolated",
+    "node",
+    "orphan",
+    "self-closing",
+    "stray",
+    "svg",
+    "void",
+    "void-elements",
+    "xhtml",
+    "xml"
+  ]
+}
